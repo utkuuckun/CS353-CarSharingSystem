@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4ce251ef-3a3b-4902-8824-70fb702c8a34" name="dijkstra" url="http://dijkstra2.ug.bcc.bilkent.edu.tr">
+        <fileTransfer host="dijkstra2.ug.bcc.bilkent.edu.tr" port="22" rootFolder="/home/cs/erin.avllazagaj/public_html" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

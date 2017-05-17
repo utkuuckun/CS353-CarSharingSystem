@@ -5,12 +5,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="This website helps reduce number of cars all over the world by increasing efficiency.">
+    <meta name="author" content="Erin Avllazagaj">
 
     <title>Car Sharing System</title>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="js/homepageJS.js"></script>
@@ -29,18 +29,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Start Bootstrap</a>
+            <a class="navbar-brand" href="#">Car Sharing System</a>
         </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="float: right">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#">About</a>
+                    <a data-toggle="modal" data-target="#loginModal" href="#">Login</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
+                    <a data-toggle="modal" data-target="#registerModal" href="#">Register</a>
                 </li>
             </ul>
         </div>
@@ -48,59 +45,82 @@
 </nav>
 
 <!-- Half Page Image Background Carousel Header -->
-<header id="myCarousel" class="carousel slide">
-    <!-- Indicators -->
-    <!--<ol class="carousel-indicators">-->
-        <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>-->
-        <!--<li data-target="#myCarousel" data-slide-to="1"></li>-->
-        <!--<li data-target="#myCarousel" data-slide-to="2"></li>-->
-    <!--</ol>-->
-    <div class="carousel-inner">
-        <div class="item active">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide One');"></div>
-            <div class="carousel-caption">
-                <h2>Caption 1</h2>
+<header id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="modal fade" id="loginModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 style="text-align: center" class="modal-title">Login</h3>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="./login.php">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="username" name="un" id="usrnm"/>
+                            <br>
+                            <input type="password" class="form-control" placeholder="password" name="pw"/>
+                        </div>
+                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Login" name="login"/>
+                    </form>
+                </div>
             </div>
+
         </div>
-        <div class="item">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Two');"></div>
-            <div class="carousel-caption">
-                <h2>Caption 2</h2>
+    </div>
+    <div class="modal fade" id="registerModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 style="text-align: center" class="modal-title">Register</h3>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="./register.php">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="email" name="un" id="email"/>
+                            <br>
+                            <input type="text" class="form-control" placeholder="username" name="un" id="usrnam"/>
+                            <br>
+                            <input type="password" class="form-control" placeholder="password" name="pw"/>
+                            <br>
+                            <input type="password" class="form-control" placeholder="retype password" name="pw"/>
+                        </div>
+                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" name="register"/>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div class="item">
-            <div class="fill" style="background-image:url('http://placehold.it/1900x1080&text=Slide Three');"></div>
-            <div class="carousel-caption">
-                <h2>Caption 3</h2>
-            </div>
+
         </div>
     </div>
 
+    <div class="carousel-inner">
+        <div class="item">
+            <div class="fill" style="background-image:url('img/hpSlide1.jpg');"></div>
+            <div class="carousel-caption">
+                <h1>Fun</h1>
+            </div>
+        </div>
+        <div class="item active">
+            <div class="fill" style="background-image:url('img/hpSlide2.jpg');"></div>
+            <div class="carousel-caption">
+                <h1>Fast</h1>
+            </div>
+        </div>
+        <div class="item">
+            <div class="fill" style="background-image:url('img/hpSlide3.jpg');"></div>
+            <div class="carousel-caption">
+                <h1>Cheap</h1>
+            </div>
+        </div>
+    </div>
     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="icon-prev"></span>
+        <!--<span class="icon-prev"></span>-->
     </a>
     <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="icon-next"></span>
+        <!--<span class="icon-next"></span>-->
     </a>
-
 </header>
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1>Half Slider by Start Bootstrap</h1>
-            <p>The background images for the slider are set directly in the HTML using inline CSS. The rest of the styles for this template are contained within the <code>half-slider.css</code>file.</p>
-        </div>
-    </div>
-    <hr>
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; CarSS 2017</p>
-            </div>
-        </div>
-    </footer>
-</div>
-
 </body>
 </html>

@@ -12,8 +12,8 @@ public class DB_Initializer {
 		String  url="jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/utku_uckun" ; 
 		Connection conn = null;
 		Statement stmt;
-		String username = "utku.uckun";
-		String password = "onhct1uv";
+		String username = "NAME";
+		String password = "PASSWORD";
 		ResultSet resSet;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");

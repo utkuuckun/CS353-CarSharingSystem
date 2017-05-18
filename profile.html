@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="This website helps reduce number of cars all over the world by increasing efficiency.">
+    <meta name="author" content="Erin Avllazagaj">
+
+    <title>Profile</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+
+    <style>
+        body {
+            background-color: #eaeaea;
+        }
+
+        img.avatar {
+            border: 1px solid #eee;
+        }
+
+        .only-bottom-margin {
+            margin-top: 0px;
+        }
+
+        .activity-mini {
+            padding-right: 15px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="search.html">Home</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <div class="dropdown">
+                        <button style="margin-top: 10px" class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="caret dropdown-toggle"></span></button>
+                        <ul class="dropdown-menu">
+                            <!--<li><a href="#">Wallet</a></li>-->
+                            <!--<li class="divider"></li>-->
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="margin-top: 80px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 lead">User profile<hr></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img class="img-circle avatar avatar-original" style="-webkit-user-select:none;
+              display:block; margin:auto;" src="http://robohash.org/sitsequiquia.png?size=120x120">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1 class="only-bottom-margin">User Name</h1>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="text-muted">Email:</span> email@test.com<br>
+                                        <span class="text-muted">Birth date:</span> 01.01.2001<br>
+                                        <span class="text-muted">Gender:</span> male<br><br>
+                                        <small class="text-muted">Created: 01.01.2015</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="activity-mini">
+                                            <i class="glyphicon glyphicon-comment text-muted"></i> 500
+                                        </div>
+                                        <div class="activity-mini">
+                                            <i class="glyphicon glyphicon-thumbs-up text-muted"></i> 1500
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr><button class="btn btn-default pull-right"><i class="glyphicon glyphicon-pencil"></i> Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -30,11 +30,13 @@
     else {
         $id = $row['user_id'];
         $_SESSION['id'] = $id;
+        $sql = "INSERT INTO user(user_id) VALUES('$id')";
+        $result = $conn->query($sql);
         if($role == 1){
             $sql = "INSERT INTO passenger VALUES('$id')";
         }
         else{
-            $sql = "INSERT INTO driver VALUES('$id','$id')";
+            $sql = "INSERT INTO driver VALUES('$id')";
         }
         $result = $conn->query($sql);
 

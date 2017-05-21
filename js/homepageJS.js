@@ -22,8 +22,8 @@ function login() {
 }
 
 function register() {
-    password = $('#pw').text();
-    retrypassword = $('#retrypw').text();
+    password = $('#registerpw').val();
+    retrypassword = $('#retrypw').val();
     //must do this
     if (retrypassword != password){
         alert("Passwords don't match!");
@@ -34,17 +34,16 @@ function register() {
         alert("You must choose a role!");
         return;
     }
-    username = $('#email').text();
-    email = $('#un').text();
-
+    username = $('#un').val();
+    email = $('#email').val();
     $.post( "ajax/register.php",{'mail':email,'un':username, 'pw':password,'role':role},function( returneddata ) {
         returneddata = JSON.parse(returneddata);
         if(returneddata.status==="Error") {
-            alert("Error connecting to the database");
+            alert("Error connecting to the database!");
         }
         else {
             if(returneddata.status==="Failure") {
-                alert("Username/Password combination is not allowed");
+                alert("Username or Email already exists!");
                 console.log(returneddata);
             }
             else {

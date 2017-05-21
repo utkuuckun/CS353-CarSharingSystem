@@ -144,12 +144,12 @@ public class DB_Initializer {
 
 			//	CHECKPOINT	
 			stmt.executeUpdate("Create table checkpoint("
-					+ "	cp_id			int,"
+					+ "cp_id			int AUTO_INCREMENT,"
 					+ "r_id				int, "
 					+ "location_name	varchar(20), "
 					+ "location_lat		int, "
 					+ "location_lon		int, "
-					+ "Price			int,"
+					+ "price			int,"
 					+ "ETA_hour			int, "
 					+ "ETA_min			int,"
 					+ "primary key(cp_id),"
@@ -178,11 +178,11 @@ public class DB_Initializer {
 			
 			//	TRIP	
 			stmt.executeUpdate("Create table trip("
-					+ "	trip_id					int,"
+					+ "	trip_id					int ,"
 					+ "	time_of_departure_h		int, "
 					+ " time_of_departure_m		int, "
-					+ " free_seats				int, "
 					+ " status 					varchar(20), "
+					+ " free_seats				int, "
 					+ " primary key(trip_id ))");
 						
 			//	PASS_COMPLAINTS	
@@ -214,7 +214,7 @@ public class DB_Initializer {
 			
 			// DRIVER_OWNS
 			stmt.executeUpdate("Create table driver_owns("
-					+ "	user_id				int, "
+					+ "	user_id				int UNIQUE, "
 					+ " v_id				int, "
 					+ " primary key(user_id, v_id), "
 					+ "	foreign key(user_id) references driver(user_id),"
@@ -222,8 +222,9 @@ public class DB_Initializer {
 			
 			//	TRIP_HAS	
 			stmt.executeUpdate("Create table trip_has("
-					+ "	r_id				int, "
-					+ " trip_id 			int, "
+					+ "	r_id				int UNIQUE AUTO_INCREMENT, "
+					+ " trip_id 			int UNIQUE, "
+					+ " free_seats			int, "
 					+ "	primary key(r_id, trip_id ),"
 					+ "	foreign key(r_id)      references route(r_id),"
 					+ " foreign key( trip_id ) references trip(trip_id))ENGINE=INNODB");
@@ -231,7 +232,7 @@ public class DB_Initializer {
 			//	HAS_DRIVER
 			stmt.executeUpdate("Create table has_driver("
 					+ "	user_id				int, "
-					+ " trip_id 			int, "
+					+ " trip_id 			int, AUTO_INCREMENT"
 					+ "	primary key(user_id, trip_id ),"
 					+ "	foreign key(user_id) references driver(user_id),"
 					+ " foreign key(trip_id) references trip(trip_id))ENGINE=INNODB");
@@ -349,7 +350,7 @@ public class DB_Initializer {
 					+ "DECLARE total_debt INTEGER DEFAULT 0; "
 					+ "(SELECT sum(cost) INTO total_debt FROM reservations NATURAL JOIN "
 					+ " NATURAL JOIN has_driver WHERE user_id = NEW.user_id AND "
-					+ "reservations.status NOT EQUAL ‘completed’); "
+					+ "reservations.status NOT EQUAL Â‘completedÂ’); "
 					+ "IF (nrow.balance-OLD.balance < total_debt) "
 					+ "ROLLBACK; "
 					+ "END IF; "
@@ -359,7 +360,7 @@ public class DB_Initializer {
 			/*
 			stmt.executeUpdate("CREATE TRIGGER trip_cancellation_updater AFTER UPDATE ON trip "
 					+ "FOR EACH ROW "
-					+ "WHEN ( NEW.status == ‘cancelled’) "
+					+ "WHEN ( NEW.status == Â‘cancelledÂ’) "
 					+ "BEGIN "
 					+ "FOR EACH ROW r IN (SELECT * FROM reservations WHERE reservation_id IN "
 					+ "(SELECT * FROM pass_makes WHERE trip_id = NEW.trip_id) ) "
@@ -369,7 +370,7 @@ public class DB_Initializer {
 					+ "reservation_id = r.reservation_id; "
 					+ "SELECT user_id INTO (driv_id) FROM has_driver WHERE trip_id = "
 					+ "NEW.trip_id; "
-					+ "UPDATE reservations SET status = ‘cancelled’ WHERE "
+					+ "UPDATE reservations SET status = Â‘cancelledÂ’ WHERE "
 					+ "reservations_id = r.reservations_id; "
 					+ "CALL transfer_money(driv_id,pass_id,r.cost); "
 					+ "END FOR; "
@@ -402,7 +403,7 @@ public class DB_Initializer {
 					+ "UPDATE wallet SET balance = balance + amount WHERE wallet_id = "
 					+ "recv_wid; "
 					+ "INSERT INTO transaction VALUES(NULL,send_wid,recv_wid,amount, "
-					+ "‘pending’, NOW()); "
+					+ "Â‘pendingÂ’, NOW()); "
 					+ "COMMIT; "
 					+ "END; "
 					+ "END");*/
@@ -429,8 +430,8 @@ public class DB_Initializer {
 			//accept_reservation
 			stmt.executeUpdate("CREATE PROCEDURE accept_reservation (res_id INT) "
 					+ "BEGIN "
-					+ "UPDATE reservations SET state = ‘accepted’ WHERE reservation_id = res_id; "
-					+ "UPDATE transaction SET state = ‘completed’ WHERE transaction_id = (SELECT "
+					+ "UPDATE reservations SET state = Â‘acceptedÂ’ WHERE reservation_id = res_id; "
+					+ "UPDATE transaction SET state = Â‘completedÂ’ WHERE transaction_id = (SELECT "
 					+ "DISTINCT transaction_id FROM checks WHERE reservation_id = res_id); "
 					+ "END; ");
 			
@@ -442,10 +443,10 @@ public class DB_Initializer {
 					+ "SELECT DISTINCT transaction_id INTO trans_id FROM checks WHERE "
 					+ "reservation_id = res_id; "
 					+ "SELECT cost INTO c FROM reservations WHERE reservation_id = res_id; "
-					+ "UPDATE reservations SET status= ‘denied’ WHERE reservation_id=res_id; "
+					+ "UPDATE reservations SET status= Â‘deniedÂ’ WHERE reservation_id=res_id; "
 					+ "UPDATE trip SET free_seats = free_seats + 1 WHERE trip_id = (SELECT "
 					+ "DISTINCT trip_id FROM trip_res WHERE reservation_id = res_id); "
-					+ "UPDATE transaction SET state = ‘denied’ WHERE transaction_id = "
+					+ "UPDATE transaction SET state = Â‘deniedÂ’ WHERE transaction_id = "
 					+ "trans_id; "
 					+ "UPDATE wallet SET balance = balance + c WHERE wallet_id = (SELECT "
 					+ "sender_id FROM transactions WHERE transaction_id = trans_id); "

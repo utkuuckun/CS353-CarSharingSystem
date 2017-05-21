@@ -35,20 +35,20 @@ function addtrip() {
         ,function( returneddata ) {
             returneddata = JSON.parse(returneddata);
             ch1_lat = retureddata.results.geometry.location.lat;
-            ch1_lon = retureddata.results.geometry.location.lng
+            ch1_lon = retureddata.results.geometry.location.lng;
         });
     $.get( "https://maps.googleapis.com/maps/api/geocode/json"
         ,{'address':encodeURIComponent(ch2_name),'key':'AIzaSyBQRntCNeFwwIN0el_h-WcP5-9hbzaIJlw'}
         ,function( returneddata ) {
             returneddata = JSON.parse(returneddata);
             ch2_lat = retureddata.results.geometry.location.lat;
-            ch2_lon = retureddata.results.geometry.location.lng
+            ch2_lon = retureddata.results.geometry.location.lng;
         });
 
     requestdata = {'timeh':timeh,'timem':timem,'ch1_name':ch1_name,'ch1_price':ch1_price,'ch1_h':ch1_h,'ch1_m':ch1_m
         ,'ch2_name':ch2_name,'ch2_price':ch2_price,'ch2_h':ch2_h,'ch2_m':ch2_m,'ch1_lat':ch1_lat
         ,'ch2_lat':ch2_lat,'ch1_lon':ch1_lon,'ch2_lon':ch2_lon};
-
+    console.log(requestdata);
     $.post( "ajax/insertTrip.php",requestdata,function( returneddata ) {
         returneddata = JSON.parse(returneddata);
         if(returneddata.status==="Error"){

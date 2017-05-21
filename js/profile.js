@@ -1,26 +1,23 @@
 $(document).ready(function () {
-        loadData();
+        $.post( "ajax/getUserData.php",function( returneddata ) {
+            returneddata = JSON.parse(returneddata);
+            if(returneddata.status==="Error"){
+                alert("Error connecting to the database");
+            }
+            else{
+                if(returneddata.status==="Failure"){
+                    window.location.replace('index.html');
+                }
+                else{
+                    loadpage(returneddata);
+                }
+            }
+        });
     }
 );
 
-function loadData() {
-    $.post( "ajax/getUserData.php",function( returneddata ) {
-        returneddata = JSON.parse(returneddata);
-        if(returneddata.status==="Error"){
-            alert("Error connecting to the database");
-        }
-        else{
-            if(returneddata.status==="Failure"){
-                window.location.replace('index.html');
-            }
-            else{
-                loadpage(returneddata);
-            }
-        }
-    });
-}
-
 function loadpage(jsonData) {
+    console.log(jsonData);
     $('.navbar-brand').text("Profile of "+jsonData.username);
     $('#namesnamespan').text(""+jsonData.data.name+" "+jsonData.data.surname);
     $('#emailspan').text(""+jsonData.email);
@@ -47,8 +44,7 @@ function updateData() {
                 window.location.replace('index.html');
             }
             else{
-                alert("Data updated successfully! Refresh to see");
-                //loadData();
+                alert("Data updated successfully! Refresh to see the changes!");
             }
         }
     });

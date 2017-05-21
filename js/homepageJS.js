@@ -45,6 +45,7 @@ function register() {
         else {
             if(returneddata.status==="Failure") {
                 alert("Username/Password combination is not allowed");
+                console.log(returneddata);
             }
             else {
                 window.location.href = 'search.html';

@@ -9,11 +9,11 @@ public class DB_Initializer {
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		String  url="jdbc:mysql://URL" ; 
+		String  url="jdbc:mysql://localhost/schoolData" ; 
 		Connection conn = null;
 		Statement stmt;
-		String username = "NAME";
-		String password = "PW";
+		String username = "root";
+		String password = "Asdf!234";
 		ResultSet resSet;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -55,7 +55,7 @@ public class DB_Initializer {
 			
 			//user_login
 			stmt.executeUpdate("CREATE TABLE user_login"
-					+ "(user_id 			int PRIMARY KEY,"
+					+ "(user_id 			int PRIMARY KEY AUTO_INCREMENT,"
 					+ " username 		VARCHAR(20) NOT NULL UNIQUE,"
 					+ " email 			VARCHAR(20) NOT NULL,"
 					+ " password 		VARCHAR(20) NOT NULL )ENGINE=INNODB");
@@ -84,7 +84,7 @@ public class DB_Initializer {
 			//	DRIVER	
 			stmt.executeUpdate("CREATE TABLE driver"+ 
 					"(user_id int PRIMARY KEY,"
-					+ " driver_license_number 				int NOT NULL UNIQUE,"
+					+ " driver_license_number 				int,"
 					+ " driver_license_type 				VARCHAR(20),"
 					+ " driver_license_expiration_y			int,"
 					+ " driver_license_expiration_m			int,"

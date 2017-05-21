@@ -49,21 +49,19 @@ function addtrip() {
         ,'ch2_name':ch2_name,'ch2_price':ch2_price,'ch2_h':ch2_h,'ch2_m':ch2_m,'ch1_lat':ch1_lat
         ,'ch2_lat':ch2_lat,'ch1_lon':ch1_lon,'ch2_lon':ch2_lon};
 
-    $.post( "ajax/getUserData.php",function( returneddata ) {
+    $.post( "ajax/insertTrip.php",requestdata,function( returneddata ) {
         returneddata = JSON.parse(returneddata);
         if(returneddata.status==="Error"){
             alert("Error connecting to the database");
         }
         else{
             if(returneddata.status==="Failure"){
-                window.location.replace('index.html');
+                alert("Couldn't add the trip!")
             }
             else{
-                loadpage(returneddata);
+                alert("Trip added successfully!")
             }
         }
     });
-
-    console.log(requestdata);
 }
 

@@ -40,16 +40,17 @@
     if(!$row = mysqli_fetch_assoc($result))
          $toprint = array('status' => 'Failure');
     else
-    {     $t_id = $row['trip_id'];
+    {
+        $t_id = $row['trip_id'];
 
-    $sql = "INSERT INTO trip(time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES('$time_of_dept_h', '$time_of_dept_m', 'open', 4) WHERE trip_id = '$t_id'";
-    $result = $conn->query($sql);
+        $sql = "INSERT INTO trip(time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES('$time_of_dept_h', '$time_of_dept_m', 'open', 4) WHERE trip_id = '$t_id'";
+        $result = $conn->query($sql);
 
-    $sql = "INSERT INTO trip_has(trip_id) VALUES('$t_id')";
-    $result = $conn->query($sql);
+        $sql = "INSERT INTO trip_has(trip_id) VALUES('$t_id')";
+        $result = $conn->query($sql);
 
-    $sql = "SELECT * FROM trip_has WHERE trip_id = '$t_id'";
-    $result = $conn->query($sql);
+        $sql = "SELECT * FROM trip_has WHERE trip_id = '$t_id'";
+        $result = $conn->query($sql);
 
         if(!$row = mysqli_fetch_assoc($result))
             $toprint = array('status' => 'Failure');

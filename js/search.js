@@ -1,18 +1,18 @@
 $(document).ready(function () {
         $.post( "ajax/getUserData.php",function( returneddata ) {
-            returneddata = JSON.parse(returneddata);
-            if(returneddata.status==="Error"){
-                alert("Error connecting to the database");
+        returneddata = JSON.parse(returneddata);
+        if(returneddata.status==="Error"){
+            alert("Error connecting to the database");
+        }
+        else{
+            if(returneddata.status==="Failure"){
+                window.location.replace('index.html');
             }
             else{
-                if(returneddata.status==="Failure"){
-                        window.location.replace('index.html');
-                }
-                else{
-                    loadpage(returneddata);
-                }
+                loadpage(returneddata);
             }
-        });
+        }
+    });
     }
 );
 

@@ -1,0 +1,68 @@
+<?php
+    session_start();
+    $HOST = "localhost";
+    $NAME = "root";
+    $PASS = "Asdf!234";
+    $DB_NAME = "schoolData";
+    $row = "";
+
+    $conn = mysqli_connect($HOST , $NAME , $PASS , $DB_NAME);
+    if(!$conn){
+        $toprint = array('status' => 'Error');
+        echo json_encode($toprint);
+        die();
+    }
+
+    $id = $_SESSION['id'];
+    $time_of_dept_m =  $_POST['timem'];
+    $time_of_dept_h =  $_POST['timeh'];
+
+    $cp1_name = $_POST['ch1_name'];
+    $cp1_loc_lat = $_POST['ch1_lat'];
+    $cp1_loc_lon = $_POST['ch1_lon'];
+    $cp1_price = $_POST['ch1_price'];
+    $cp1_hour = $_POST['ch1_h'];
+    $cp1_min = $_POST['ch1_m'];
+
+    $cp2_name = $_POST['ch2_name'];
+    $cp2_loc_lat = $_POST['ch2_lat'];
+    $cp2_loc_lon = $_POST['ch2_lon'];
+    $cp2_price = $_POST['ch2_price'];
+    $cp2_hour = $_POST['ch2_h'];
+    $cp2_min = $_POST['ch2_m'];
+
+    $sql = "INSERT INTO has_driver(user_id) VALUES('$id') ";
+    $result = $conn->query($sql);
+
+    $sql = "SELECT * FROM has_driver WHERE user_id = '$id'";
+    $result = $conn->query($sql);
+
+    if(!$row = mysqli_fetch_assoc($result))
+         $toprint = array('status' => 'Failure');
+    else
+    {     $t_id = $row['trip_id'];
+
+    $sql = "INSERT INTO trip(time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES('$time_of_dept_h', '$time_of_dept_m', 'open', 4) WHERE trip_id = '$t_id'";
+    $result = $conn->query($sql);
+
+    $sql = "INSERT INTO trip_has(trip_id) VALUES('$t_id')";
+    $result = $conn->query($sql);
+
+    $sql = "SELECT * FROM trip_has WHERE trip_id = '$t_id'";
+    $result = $conn->query($sql);
+
+        if(!$row = mysqli_fetch_assoc($result))
+            $toprint = array('status' => 'Failure');
+        else
+        {
+            $r_id = $row['r_id'];
+            $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES('$r_id','$cp1_name', '$cp1_loc_lat', '$cp1_loc_lon', '$cp1_price', '$cp1_hour', '$cp1_min' ) ";
+            $result = $conn->query($sql);
+
+            $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES('$r_id','$cp2_name', '$cp2_loc_lat', '$cp2_loc_lon', '$cp2_price', '$cp2_hour', '$cp2_min' ) ";
+            $result = $conn->query($sql);
+            $toprint = array('status' => 'Success');
+        }
+    }
+    echo json_encode($toprint);
+?>

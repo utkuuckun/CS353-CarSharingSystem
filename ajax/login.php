@@ -16,6 +16,7 @@
    $username = $_POST['un'];
    $password = $_POST['pw'];
 
+   // no escaping is done... SQL injection is possible
    $sql = "SELECT * FROM user_login WHERE password = '$password' AND username = '$username'";
    $result = $conn->query($sql);
 

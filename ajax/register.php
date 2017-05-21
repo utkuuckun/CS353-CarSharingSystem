@@ -16,6 +16,7 @@
     $mail = $_POST['mail'];
     $username = $_POST['un'];
     $pass = $_POST['pw'];
+    $role = $_POST['role'];
 
     $sql = "INSERT INTO user_login(username, email, password) VALUES ('$username', '$mail', '$pass')";
     $result = $conn->query($sql);
@@ -24,11 +25,21 @@
     $result = $conn->query($sql);
 
 
+
     if(!$row = mysqli_fetch_assoc($result)){
        $toprint = array('status' => 'Failure');
     }
     else {
+        $id = $row['user_id'];
         $_SESSION['id'] = $row['user_id'];
+        if(role == 1){
+            $sql = "INSERT INTO passenger VALUES ('$id')";
+        }
+        else{
+            $sql = "INSERT INTO driver VALUES ('$id','$id')";
+        }
+        $result = $conn->query($sql);
+
         $toprint = array('status' => 'Success','id'=>$row['user_id']);
     }
 

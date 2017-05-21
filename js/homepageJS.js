@@ -24,12 +24,31 @@ function login() {
 function register() {
     password = $('#pw').text();
     retrypassword = $('#retrypw').text();
+    //must do this
     if (retrypassword != password){
         alert("Passwords don't match!");
+        return;
+    }
+    role = $('#rolepicker label.active input').val();
+    if(role != 1 && role != 2){
+        alert("You must choose a role!");
         return;
     }
     username = $('#email').text();
     email = $('#un').text();
 
-
+    $.post( "ajax/register.php",{'mail':email,'un':username, 'pw':password,'role':role},function( returneddata ) {
+        returneddata = JSON.parse(returneddata);
+        if(returneddata.status==="Error") {
+            alert("Error connecting to the database");
+        }
+        else {
+            if(returneddata.status==="Failure") {
+                alert("Username/Password combination is not allowed");
+            }
+            else {
+                window.location.href = 'search.html';
+            }
+        }
+    });
 }

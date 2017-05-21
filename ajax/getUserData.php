@@ -23,7 +23,7 @@ session_start();
     else{
        $sql = "SELECT * FROM user WHERE user_id = '$id'";
        $result = $conn->query($sql);
-       $toprint = array('id'=>$id);
+       $toprint = array('id'=>$id,'username'=>$row['username']);
        $row = mysqli_fetch_assoc($result);
        $toprint['data'] = $row;
        echo json_encode($toprint);

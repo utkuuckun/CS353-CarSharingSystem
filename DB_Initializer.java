@@ -62,10 +62,10 @@ public class DB_Initializer {
 			stmt.executeUpdate("DROP VIEW IF EXISTS vehicles_check_view" );
 			
 			//DROP TRIGGER
-			/*
+			
 			stmt.executeUpdate("DROP TRIGGER IF EXISTS resupdater" );
 			stmt.executeUpdate("DROP TRIGGER IF EXISTS withdraw_updater" );
-			stmt.executeUpdate("DROP TRIGGER IF EXISTS trip_cancellation_updater" );*/
+			//stmt.executeUpdate("DROP TRIGGER IF EXISTS trip_cancellation_updater" );
 			
 			//DROP PROCEDURE
 			stmt.executeUpdate("DROP PROCEDURE IF EXISTS transfer_money" );

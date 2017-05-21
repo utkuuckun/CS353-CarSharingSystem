@@ -3,8 +3,8 @@ $('.carousel').carousel({
 })
 
 function login() {
-    username = $('#usrnm').text();
-    password = $('#passwd').text();
+    username = $('#usrnm').val();
+    password = $('#passwd').val();
     $.post( "ajax/login.php",{'un':username ,'pw':password},function( returneddata ) {
         returneddata = JSON.parse(returneddata);
         if(returneddata.status==="Error"){

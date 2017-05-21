@@ -13,7 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
-
+    <script src="js/profile.js"></script>
     <style>
         body {
             background-color: #eaeaea;
@@ -43,7 +43,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="search.html">Home</a>
+            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-text" href="search.html">Search</a>
         </div>
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -66,7 +67,7 @@
 <div class="container" style="margin-top: 80px;">
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="row">
@@ -74,36 +75,29 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 text-center">
-                                <img class="img-circle avatar avatar-original" style="-webkit-user-select:none;
-              display:block; margin:auto;" src="http://robohash.org/sitsequiquia.png?size=120x120">
+                                <img width="120" height="120" class="img-circle avatar avatar-original" style="-webkit-user-select:none;
+              display:block; margin:auto;" src="https://s3.amazonaws.com/whisperinvest-images/default.png">
                             </div>
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h1 class="only-bottom-margin">User Name</h1>
+                                        <h1 class="only-bottom-margin"> <span id="namesnamespan">User Name</span></h1>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <span class="text-muted">Email:</span> email@test.com<br>
-                                        <span class="text-muted">Birth date:</span> 01.01.2001<br>
-                                        <span class="text-muted">Gender:</span> male<br><br>
-                                        <small class="text-muted">Created: 01.01.2015</small>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="activity-mini">
-                                            <i class="glyphicon glyphicon-comment text-muted"></i> 500
-                                        </div>
-                                        <div class="activity-mini">
-                                            <i class="glyphicon glyphicon-thumbs-up text-muted"></i> 1500
-                                        </div>
+                                    <div class="col-md-8">
+                                        <span class="text-muted">Email:</span> <span id="emailspan">email@test.com</span><br>
+                                        <span class="text-muted">Birth year:</span> <span id="dobspanspan">1996</span><br>
+                                        <span class="text-muted">Gender:</span> <span id="genderspan">null</span><br>
+                                        <span class="text-muted">Phone Number:</span> <span id="phonespan">123456789</span><br>
+                                        <!--<small class="text-muted">Created: 01.01.2015</small>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <hr><button class="btn btn-default pull-right"><i class="glyphicon glyphicon-pencil"></i> Edit</button>
+                                <hr><a data-toggle="modal" data-target="#dataUpdaterModal" href="#" class="btn btn-default pull-right"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
                             </div>
                         </div>
                     </div>
@@ -112,6 +106,34 @@
             <div class="col-md-4">
             </div>
         </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dataUpdaterModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 style="text-align: center" class="modal-title">Update Data</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Name: John" id="dataName"/>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Surname: Doe" id="dataSurname"/>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Birth Year: 2001" id="dataYear"/>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Gender: male,female" id="dataGender"/>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Phone number: 1234" id="dataNumber"/>
+                </div>
+                <button type="button" onclick="updateData()" class="btn btn-lg btn-primary btn-block">Save</button>
+                <br>
+            </div>
+        </div>
+
     </div>
 </div>
 

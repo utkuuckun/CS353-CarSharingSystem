@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head lang="EN">
+    <title>Driver - Add trip</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="This website helps reduce number of cars all over the world by increasing efficiency.">
+    <meta name="author" content="Erin Avllazagaj">
+
+    <title>Profile</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+    <script src="js/addTrip.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <table class="table table-bordered table-hover" id="tab_logic">
+                    <thead>
+                    <tr >
+                        <th class="text-center">
+                            #
+                        </th>
+                        <th class="text-center">
+                            Name
+                        </th>
+                        <th class="text-center">
+                            Mail
+                        </th>
+                        <th class="text-center">
+                            Mobile
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id='addr0'>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            <input type="text" name='name0'  placeholder='Name' class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="text" name='mail0' placeholder='Mail' class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="text" name='mobile0' placeholder='Mobile' class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr id='addr1'>
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            <input type="text" name='name0'  placeholder='Name' class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="text" name='mail0' placeholder='Mail' class="form-control"/>
+                        </td>
+                        <td>
+                            <input type="text" name='mobile0' placeholder='Mobile' class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr id='addr2'></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a id="add_row" class="btn btn-default pull-left">Add Row</a><a id='delete_row' class="pull-right btn btn-default">Delete Row</a>
+    </div>
+</body>
+</html>

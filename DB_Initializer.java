@@ -1,5 +1,3 @@
-package database;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 //import java.sql.ResultSet;
@@ -11,7 +9,7 @@ public class DB_Initializer {
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		String  url="jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/can_bayraktar" ; 
+		String  url="jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/name_surname" ; 
 		Connection conn = null;
 		Statement stmt;
 		String username = "username";
@@ -31,8 +29,8 @@ public class DB_Initializer {
 			System.out.println ( exc.getMessage() ); 
 		}
 		try{
-			
 			stmt = conn.createStatement();
+			//DROP TABLE
 			stmt.executeUpdate("DROP TABLE IF EXISTS pass_makes");
 			stmt.executeUpdate("DROP TABLE IF EXISTS res_has");
 			stmt.executeUpdate("DROP TABLE IF EXISTS driver_owns" );
@@ -53,29 +51,20 @@ public class DB_Initializer {
 			stmt.executeUpdate("DROP TABLE IF EXISTS user");
 			stmt.executeUpdate("DROP TABLE IF EXISTS customer_service");
 			stmt.executeUpdate("DROP TABLE IF EXISTS user_login" );
-
 			
-			
-			
-			
-			
-			/*
-			stmt.executeUpdate("DROP INDEX checkpoint_name_index ON checkpoint" );
-			stmt.executeUpdate("DROP INDEX checkpoint_coords_index ON checkpoint" );
-			stmt.executeUpdate("DROP INDEX user_name_index ON user" );
-			stmt.executeUpdate("DROP INDEX user_sname_index ON user" );
-			*/
-			
+			//DROP VIEW
 			stmt.executeUpdate("DROP VIEW IF EXISTS credentials_view" );
 			stmt.executeUpdate("DROP VIEW IF EXISTS wallet_view" );
 			stmt.executeUpdate("DROP VIEW IF EXISTS transactions_view" );
 			stmt.executeUpdate("DROP VIEW IF EXISTS trip_revenue_view" );
 			stmt.executeUpdate("DROP VIEW IF EXISTS vehicles_check_view" );
 			
-			/*stmt.executeUpdate("DROP TRIGGER IF EXISTS resupdater" );
+			//DROP TRIGGER
+			stmt.executeUpdate("DROP TRIGGER IF EXISTS resupdater" );
 			stmt.executeUpdate("DROP TRIGGER IF EXISTS withdraw_updater" );
-			stmt.executeUpdate("DROP TRIGGER IF EXISTS trip_cancellation_updater" );*/
+			stmt.executeUpdate("DROP TRIGGER IF EXISTS trip_cancellation_updater" );
 			
+			//DROP PROCEDURE
 			stmt.executeUpdate("DROP PROCEDURE IF EXISTS transfer_money" );
 			stmt.executeUpdate("DROP PROCEDURE IF EXISTS register_user" );
 			stmt.executeUpdate("DROP PROCEDURE IF EXISTS accept_reservation" );
@@ -192,6 +181,7 @@ public class DB_Initializer {
 					+ "	trip_id					int,"
 					+ "	time_of_departure_h		int, "
 					+ " time_of_departure_m		int, "
+					+ " free_seats				int, "
 					+ " status 					varchar(20), "
 					+ " primary key(trip_id ))");
 						
@@ -302,6 +292,7 @@ public class DB_Initializer {
 			stmt.executeUpdate("INSERT INTO wallet" 
 				    + "VALUES (000012, 500)" );
 			*/
+			
 			//INDICES
 			
 			//Checkpoint name index
@@ -317,8 +308,6 @@ public class DB_Initializer {
 			//User surname index
 			stmt.executeUpdate("CREATE INDEX user_sname_index USING BTREE ON user(surname);");
 		
-			
-			
 			
 			// VIEWS 
 			
@@ -336,51 +325,50 @@ public class DB_Initializer {
 					+ "JOIN pass_makes GROUP BY trip_id)");
 			
 			//Vehicles_Check view
-			
 			stmt.executeUpdate("CREATE VIEW vehicles_check_view AS (SELECT count(*) FROM vehicle NATURAL JOIN "
 					+ "driver_owns GROUP BY user_id)");
 			
 			//TRIGGERS
 			
-			//resupdater - syntax error (ON AFTER UPDATE)
-			/*
-			stmt.executeUpdate("CREATE TRIGGER resupdater ON AFTER UPDATE OF trip ON free_seats"
-					+ "UPDATE reservations SET status=’cancelled’ WHERE reservation_id IN"
-					+ "(SELECT * FROM trip_res WHERE trip_res.trip_id = trip_id);"
-					+ "END;");*/
+			//resupdater
 			
-			//withdraw_updater - syntax error (ON wallet AFTER UPDATE OF wallet)
+			stmt.execute("CREATE TRIGGER resupdater  AFTER UPDATE ON trip " 
+                    + "FOR EACH ROW "
+                    + "BEGIN "
+                    + "IF OLD.free_seats <> NEW.free_seats THEN "
+                    + "UPDATE reservations SET status='cancelled' WHERE reservation_id IN (SELECT * FROM trip_res WHERE trip_res.trip_id = trip_id); "
+                    + "END IF; "
+                    + "END;");
+			
+			//withdraw_updater - syntax error near WHEN (NEW.user_id
 			/*
-			stmt.executeUpdate("CREATE TRIGGER withdraw_updater ON wallet AFTER UPDATE OF wallet ON balance "
-					+ "REFERENCING NEW ROW AS nrow "
-					+ "REFERENCING OLD ROW AS orow "
-					+ "WHEN ( nrow.user_id IN (SELECT user_id FROM driver)) "
+			stmt.executeUpdate("CREATE TRIGGER withdraw_updater AFTER UPDATE ON wallet "
+					+ "FOR EACH ROW "
+					+ "WHEN ( NEW.user_id IN (SELECT user_id FROM driver)) "
 					+ "BEGIN "
 					+ "DECLARE total_debt INTEGER DEFAULT 0; "
 					+ "(SELECT sum(cost) INTO total_debt FROM reservations NATURAL JOIN "
-					+ "trip_res NATURAL JOIN has_dirver WHERE user_id = nrow.user_id AND "
+					+ " NATURAL JOIN has_driver WHERE user_id = NEW.user_id AND "
 					+ "reservations.status NOT EQUAL ‘completed’); "
-					+ "IF (nrow.balance-orow.balance < total_debt) "
+					+ "IF (nrow.balance-OLD.balance < total_debt) "
 					+ "ROLLBACK; "
 					+ "END IF; "
 					+ "END;");*/
 			
-			//trip_cancellation_updater - syntax error (ON wallet AFTER UPDATE OF)
+			//trip_cancellation_updater - syntax error
 			/*
-			stmt.executeUpdate("CREATE TRIGGER trip_cancellation_updater ON wallet AFTER UPDATE OF trip ON "
-					+ "status "
-					+ "REFERENCING NEW ROW AS nrow "
-					+ "REFERENCING OLD ROW AS orow "
-					+ "WHEN ( nrow.status == ‘cancelled’) "
+			stmt.executeUpdate("CREATE TRIGGER trip_cancellation_updater AFTER UPDATE ON trip "
+					+ "FOR EACH ROW "
+					+ "WHEN ( NEW.status == ‘cancelled’) "
 					+ "BEGIN "
 					+ "FOR EACH ROW r IN (SELECT * FROM reservations WHERE reservation_id IN "
-					+ "(SELECT * FROM trip_res WHERE trip_id = nrow.trip_id) ) "
-					+ "DECLARE pass_id; "
-					+ "DECLARE driv_id; "
+					+ "(SELECT * FROM pass_makes WHERE trip_id = NEW.trip_id) ) "
+					+ "DECLARE pass_id int ; "
+					+ "DECLARE driv_id int ; "
 					+ "SELECT user_id INTO (pass_id) FROM pass_makes WHERE "
 					+ "reservation_id = r.reservation_id; "
 					+ "SELECT user_id INTO (driv_id) FROM has_driver WHERE trip_id = "
-					+ "nrow.trip_id; "
+					+ "NEW.trip_id; "
 					+ "UPDATE reservations SET status = ‘cancelled’ WHERE "
 					+ "reservations_id = r.reservations_id; "
 					+ "CALL transfer_money(driv_id,pass_id,r.cost); "
@@ -389,18 +377,17 @@ public class DB_Initializer {
 			
 			//PROCEDURES
 			
-			//transfer_money - syntax error
+			//transfer_money - we no longer have wallet_id
 			/*
 			stmt.executeUpdate("CREATE PROCEDURE transfer_money (send_uid INT, recv_uid INT, amount INT) "
-					+ "AS "
 					+ "BEGIN "
 					+ "IF(amount < 0) "
 					+ "RETURN; "
 					+ "END IF; "
-					+ "DECLARE send_wid; "
-					+ "DECLARE send_bal; "
-					+ "DECLARE recv_wid; "
-					+ "DECLARE recv_bal; "
+					+ "DECLARE send_wid int; "
+					+ "DECLARE send_bal int; "
+					+ "DECLARE recv_wid int; "
+					+ "DECLARE recv_bal int; "
 					+ "SELECT wallet_id INTO (send_wid) FROM wallet NATURAL JOIN has_wallet "
 					+ "WHERE user_id = send_uid; "
 					+ "SELECT wallet_id INTO (recv_wid) FROM wallet NATURAL JOIN has_wallet "
@@ -420,11 +407,10 @@ public class DB_Initializer {
 					+ "END; "
 					+ "END");*/
 			
-			/*
+			//register_user
 			stmt.executeUpdate("CREATE PROCEDURE register_user (passenger BOOLEAN, email "
 					+ "VARCHAR(250), username VARCHAR(100), password VARCHAR(30), first "
 					+ "VARCHAR(20), last VARCHAR(20), dob DATE) "
-					//+ "AS "
 					+ "BEGIN "
 					+ "DECLARE uid int; "
 					+ "START TRANSACTION; "
@@ -438,8 +424,9 @@ public class DB_Initializer {
 					+ "ELSE "
 					+ "INSERT INTO driver VALUES(uid,NULL,NULL,NULL,NULL); "
 					+ "END IF; "
-					+ "END; ");*/
+					+ "END; ");
 			
+			//accept_reservation
 			stmt.executeUpdate("CREATE PROCEDURE accept_reservation (res_id INT) "
 					+ "BEGIN "
 					+ "UPDATE reservations SET state = ‘accepted’ WHERE reservation_id = res_id; "
@@ -447,7 +434,7 @@ public class DB_Initializer {
 					+ "DISTINCT transaction_id FROM checks WHERE reservation_id = res_id); "
 					+ "END; ");
 			
-			
+			//deny_reservation
 			stmt.executeUpdate("CREATE PROCEDURE deny_reservation (res_id INT, driv_id INT) "
 					+ "BEGIN "
 					+ "DECLARE trans_id int; "
@@ -465,18 +452,6 @@ public class DB_Initializer {
 					+ "UPDATE wallet SET balance = balance - c WHERE wallet_id = (SELECT "
 					+ "receiver_id FROM transactions WHERE transaction_id = trans_id); "
 					+ "END; ");
-			
-			//driver economy revenue needed
-			/*
-			stmt.executeUpdate("SELECT name,surname,age,gender "
-					+ "FROM user "
-					+ "WHERE user_id IN "
-					+ "( SELECT user_id, count(*) AS travels "
-					+ "FROM has_driver "
-					+ "GROUP BY user_id "
-					+ "SORT BY travels DESC "
-					+ "LIMIT 0,10 "
-					+ "); ");*/
 		}
 		catch(Exception exc){	 
 			System.out.println ( exc.getMessage() );

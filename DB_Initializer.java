@@ -9,11 +9,11 @@ public class DB_Initializer {
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		String  url="jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/utku_uckun" ; 
+		String  url="jdbc:mysql://URL" ; 
 		Connection conn = null;
 		Statement stmt;
 		String username = "NAME";
-		String password = "PASSWORD";
+		String password = "PW";
 		ResultSet resSet;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");

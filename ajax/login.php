@@ -2,12 +2,15 @@
   session_start();
   $HOST = "localhost";
   $NAME = "root";
-  $PASS = "";
-  $DB_NAME = "Project";
+  $PASS = "Asdf!234";
+  $DB_NAME = "schoolData";
   $row = "";
    $conn = mysqli_connect($HOST , $NAME , $PASS , $DB_NAME);
+
    if(!$conn){
-       die("Server Connection Failed!");
+       $toprint = array('status' => 'Error');
+       echo json_encode($toprint);
+       die();
    }
 
    $username = $_POST['un'];
@@ -18,11 +21,12 @@
 
 
    if(!$row = mysqli_fetch_assoc($result)){
-       header("Location: index.html?s=f");
+        $toprint = array('status' => 'Failure');
    }
    else {
        $_SESSION['id'] = $row['user_id'];
-       header("Location: index.html?s=s");
+       $toprint = array('status' => 'Success','id'=>$row['user_id']);
    }
+   echo json_encode($toprint);
 
 ?>

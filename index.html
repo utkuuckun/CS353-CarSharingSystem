@@ -56,14 +56,13 @@
                     <h3 style="text-align: center" class="modal-title">Login</h3>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="./login.php">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="username" name="un" id="usrnm"/>
-                            <br>
-                            <input type="password" class="form-control" placeholder="password" name="pw"/>
-                        </div>
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Login" name="login"/>
-                    </form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="username" name="un" id="usrnm"/>
+                        <br>
+                        <input type="password" class="form-control" placeholder="password" name="pw" id="passwd"/>
+                    </div>
+                    <button type="button" onclick="login()" class="btn btn-lg btn-success btn-block">Login</button>
+                    <br>
                 </div>
             </div>
 
@@ -77,18 +76,24 @@
                     <h3 style="text-align: center" class="modal-title">Register</h3>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="./register.php">
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="email" name="mail" id="email"/>
-                            <br>
-                            <input type="text" class="form-control" placeholder="username" name="un" id="usrnam"/>
-                            <br>
-                            <input type="password" class="form-control" placeholder="password" name="pw"/>
-                            <br>
-                            <input type="password" class="form-control" placeholder="retype password" name="pw"/>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="email" name="mail" id="email"/>
+                        <br>
+                        <input type="text" class="form-control" placeholder="username" name="un" id="un"/>
+                        <br>
+                        <input type="password" class="form-control" placeholder="password" name="pw" id="pw"/>
+                        <br>
+                        <input type="password" class="form-control" placeholder="retype password" name="pw" id="retrypw"/>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Tutorials
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Passenger</a></li>
+                              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Driver</a></li>
+                            </ul>
                         </div>
-                        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" name="register"/>
-                    </form>
+                    </div>
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" name="register"/>
                 </div>
             </div>
 

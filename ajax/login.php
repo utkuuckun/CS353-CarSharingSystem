@@ -1,9 +1,6 @@
 <?php
   session_start();
-  $HOST = "localhost";
-  $NAME = "root";
-  $PASS = "Asdf!234";
-  $DB_NAME = "schoolData";
+  require_once('database_credentials.php');
   $row = "";
    $conn = mysqli_connect($HOST , $NAME , $PASS , $DB_NAME);
 

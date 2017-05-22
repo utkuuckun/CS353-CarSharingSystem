@@ -1,9 +1,6 @@
 <?php
     session_start();
-    $HOST = "localhost";
-    $NAME = "root";
-    $PASS = "Asdf!234";
-    $DB_NAME = "schoolData";
+    require_once('database_credentials.php');
     $row = "";
 
     $conn = mysqli_connect($HOST , $NAME , $PASS , $DB_NAME);
@@ -34,17 +31,18 @@
     $sql = "INSERT INTO has_driver(user_id) VALUES('$id') ";
     $result = $conn->query($sql);
 
-    $sql = "SELECT * FROM has_driver WHERE user_id = '$id'";
-    $result = $conn->query($sql);
-
-    if(!$row = mysqli_fetch_assoc($result))
-         $toprint = array('status' => 'Failure');
+    if(!$result)
+         $toprint = array('status' => 'Failure','msg'=>'Could not do the insertion of has_driver');
     else
     {
         $t_id = $row['trip_id'];
 
         $sql = "INSERT INTO trip(time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES('$time_of_dept_h', '$time_of_dept_m', 'open', 4) WHERE trip_id = '$t_id'";
         $result = $conn->query($sql);
+        if(!$result){
+            $toprint = array('status' => 'Failure','msg'=>'Could not do the insertion');
+            die();
+        }
 
         $sql = "INSERT INTO trip_has(trip_id) VALUES('$t_id')";
         $result = $conn->query($sql);

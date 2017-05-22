@@ -15,7 +15,7 @@ session_start();
     }
     $id = $_SESSION['id'];
 
-    $sql = "SELECT * FROM user_login WHERE user_id = '$id'";
+    $sql = "SELECT * FROM credentials_view WHERE user_id = '$id'";
     $result = $conn->query($sql);
     if(!$row = mysqli_fetch_assoc($result)){
        $toprint = array('status' => 'Failure');
@@ -26,6 +26,16 @@ session_start();
        $toprint = array('id'=>$id,'username'=>$row['username'],'email'=>$row['email']);
        $row = mysqli_fetch_assoc($result);
        $toprint['data'] = $row;
+
+       //checking if user is driver
+       $sql = "SELECT * FROM passenger WHERE user_id = '$id'";
+       $result = $conn->query($sql);
+       if($row = mysqli_fetch_assoc($result)){
+            $toprint['driver'] = 'False';
+       }
+       else{
+            $toprint['driver'] = 'True';
+       }
     }
     echo json_encode($toprint);
 ?>

@@ -11,11 +11,11 @@ public class DB_Initializer {
 	public static void main(String[] args)
 	{
 		// TODO Auto-generated method stub
-		String  url="jdbc:mysql://dijkstra2.ug.bcc.bilkent.edu.tr/name_surname" ; 
+		String  url="jdbc:mysql://localhost/schoolData" ; 
 		Connection conn = null;
 		Statement stmt;
-		String username = "username";
-		String password = "password";
+		String username = "root";
+		String password = "Asdf!234";
 		//ResultSet resSet;
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
@@ -85,12 +85,12 @@ public class DB_Initializer {
 			//  USER	
 			stmt.executeUpdate("CREATE TABLE user" 
 					+ "(user_id 			int PRIMARY KEY, "
-					+ " name 				VARCHAR(20) NOT NULL,"
-					+ " surname 			VARCHAR(20) NOT NULL,"
+					+ " name 				VARCHAR(20),"
+					+ " surname 			VARCHAR(20),"
 					+ " age 				int,"
 					+ " gender 				VARCHAR(10),"
-					+ " phone_number 		int,"
-					+ " birth_year 			DATE,"
+					+ " phone_number 		VARCHAR(20),"
+					+ " birth_year 			int,"
 					+ " FOREIGN KEY(user_id) references user_login(user_id) ON DELETE CASCADE)ENGINE=INNODB");
 			
 			//	CUSTOMER SERVICE	
@@ -339,7 +339,7 @@ public class DB_Initializer {
 			stmt.execute("CREATE TRIGGER resupdater  AFTER UPDATE ON trip " 
                     + "FOR EACH ROW "
                     + "BEGIN "
-                    + "IF OLD.free_seats <> NEW.free_seats THEN "
+                    + "IF OLD.free_seats = NEW.free_seats THEN "
                     + "UPDATE reservations SET status='cancelled' WHERE reservation_id IN (SELECT * FROM trip_res WHERE trip_res.trip_id = trip_id); "
                     + "END IF; "
                     + "END;");
@@ -352,7 +352,7 @@ public class DB_Initializer {
 					+ "IF NEW.user_id = (SELECT user_id FROM driver) THEN "
 					+ "(SELECT sum(cost) INTO total_debt FROM reservations NATURAL JOIN pass_makes "
 					+ "NATURAL JOIN has_driver WHERE user_id = NEW.user_id AND "
-					+ "reservations.status <> ‘completed’); "
+					+ "reservations.status = 'completed'); "
 					+ "IF NEW.balance-OLD.balance < total_debt THEN "
 					+ "SIGNAL SQLSTATE '45001' set message_text = \"Failed\"; "
 					+ "END IF; "
@@ -366,14 +366,14 @@ public class DB_Initializer {
 					+ "BEGIN "
 					+ "DECLARE pass_id int ; "
 					+ "DECLARE driv_id int ; "
-					+ "IF  NEW.status = ‘cancelled’ THEN "
+					+ "IF  NEW.status = 'cancelled' THEN "
 					+ "(SELECT * FROM reservations WHERE reservation_id IN "
 					+ "(SELECT * FROM pass_makes WHERE trip_id = NEW.trip_id) ) "
 					+ "SELECT user_id INTO (pass_id) FROM pass_makes WHERE "
 					+ "reservation_id = r.reservation_id; "
 					+ "SELECT user_id INTO (driv_id) FROM has_driver WHERE trip_id = "
 					+ "NEW.trip_id; "
-					+ "UPDATE reservations SET status = ‘cancelled’ WHERE "
+					+ "UPDATE reservations SET status = 'cancelled' WHERE "
 					+ "reservations_id = r.reservations_id; "
 					+ "CALL transfer_money(driv_id,pass_id,r.cost); "
 					+ "END IF; "
@@ -406,7 +406,7 @@ public class DB_Initializer {
 					+ "UPDATE wallet SET balance = balance + amount WHERE wallet_id = "
 					+ "recv_wid; "
 					+ "INSERT INTO transaction VALUES(NULL,send_wid,recv_wid,amount, "
-					+ "‘pending’, NOW()); "
+					+ "'pending', NOW()); "
 					+ "COMMIT; "
 					+ "END; "
 					+ "END");*/
@@ -433,8 +433,8 @@ public class DB_Initializer {
 			//accept_reservation
 			stmt.executeUpdate("CREATE PROCEDURE accept_reservation (res_id INT) "
 					+ "BEGIN "
-					+ "UPDATE reservations SET state = ‘accepted’ WHERE reservation_id = res_id; "
-					+ "UPDATE transaction SET state = ‘completed’ WHERE transaction_id = (SELECT "
+					+ "UPDATE reservations SET state = 'accepted' WHERE reservation_id = res_id; "
+					+ "UPDATE transaction SET state = 'completed' WHERE transaction_id = (SELECT "
 					+ "DISTINCT transaction_id FROM checks WHERE reservation_id = res_id); "
 					+ "END; ");
 			
@@ -446,10 +446,10 @@ public class DB_Initializer {
 					+ "SELECT DISTINCT transaction_id INTO trans_id FROM checks WHERE "
 					+ "reservation_id = res_id; "
 					+ "SELECT cost INTO c FROM reservations WHERE reservation_id = res_id; "
-					+ "UPDATE reservations SET status= ‘denied’ WHERE reservation_id=res_id; "
+					+ "UPDATE reservations SET status= 'denied' WHERE reservation_id=res_id; "
 					+ "UPDATE trip SET free_seats = free_seats + 1 WHERE trip_id = (SELECT "
 					+ "DISTINCT trip_id FROM trip_res WHERE reservation_id = res_id); "
-					+ "UPDATE transaction SET state = ‘denied’ WHERE transaction_id = "
+					+ "UPDATE transaction SET state = 'denied' WHERE transaction_id = "
 					+ "trans_id; "
 					+ "UPDATE wallet SET balance = balance + c WHERE wallet_id = (SELECT "
 					+ "sender_id FROM transactions WHERE transaction_id = trans_id); "

@@ -23,10 +23,10 @@
     $year = date("Y");
     $age =  $year - $birth_date;
 
-    $sql = "UPDATE user SET name = '$name', surname = '$surname', age = '$age', gender = '$gender', phone_number = $phone_number, birth_year = $birth_date WHERE user_id = '$id'";
-
+    $sql = "UPDATE user SET name = '$name', surname = '$surname', age = '$age', gender = '$gender', phone_number = $phone_number, birth_year = $birth_date WHERE user_id = $id";
     $result = $conn->query($sql);
-    if($result){
+
+    if(!$result){
         $toprint = array('status' => 'Failure');
     }
     else{

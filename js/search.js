@@ -18,4 +18,8 @@ $(document).ready(function () {
 
 function loadpage(jsonData) {
     $('.navbar-brand').text("Welcome "+jsonData.username);
+    console.log(jsonData);
+    if(jsonData.driver == 'True'){
+        $('#driverStuff').css({'display':'block'});
+    }
 }

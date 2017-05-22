@@ -17,7 +17,6 @@ $(document).ready(function () {
 );
 
 function loadpage(jsonData) {
-    console.log(jsonData);
     $('.navbar-brand').text("Profile of "+jsonData.username);
     $('#namesnamespan').text(""+jsonData.data.name+" "+jsonData.data.surname);
     $('#emailspan').text(""+jsonData.email);
@@ -32,7 +31,6 @@ function updateData() {
     year = $('#dataYear').val();
     gen = $('#dataGender').val();
     pno = $('#dataNumber').val();
-
     $.post( "ajax/updateData.php",{'name':name,'sname':sname,'dob':year,'gen':gen,'pno':pno}
            ,function( returneddata ) {
         returneddata = JSON.parse(returneddata);
@@ -41,7 +39,7 @@ function updateData() {
         }
         else{
             if(returneddata.status==="Failure"){
-                window.location.replace('index.html');
+                alert("Data failed to update! Check your data and try again!");
             }
             else{
                 alert("Data updated successfully! Refresh to see the changes!");

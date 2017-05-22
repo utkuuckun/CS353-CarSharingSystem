@@ -1,5 +1,7 @@
 <?php
     session_start();
+    $trip_id = 0;
+    $r_id = 0;
     require_once('database_credentials.php');
     $row = "";
 
@@ -29,47 +31,39 @@
     $cp2_min = $_POST['ch2_m'];
 
     //Fails here! Cannot do the insertion. Maybe it needs both userid and trip id. So you need ot add the trip first
-    $sql = "INSERT INTO has_driver(user_id) VALUES('$id') ";
+    $sql = "INSERT INTO trip(trip_id, time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES($GLOBALS['t_id'], '$time_of_dept_h', '$time_of_dept_m', 'open', 4);
+    $result = $conn->query($sql);
+    
+    $sql = "INSERT INTO has_driver(user_id, trip_id) VALUES('$id', $GLOBALS['t_id']) ";
     $result = $conn->query($sql);
     if(!$result)
          $toprint = array('status' => 'Failure','msg'=>'Could not do the insertion of has_driver');
     else
-    {
-        //ERROR is here! You don't have only 1 trip_id for a driver. They can have more
-        $sql = "SELECT * FROM has_driver WHERE user_id = '$id'";
-        $result = $conn->query($sql);
-
-        if(!$row = mysqli_fetch_assoc($result)){
-             $toprint = array('status' => 'Failure','msg' => 'Cannot insert new trip.');
-             echo json_encode($toprint);
-             die();
-        }
-
-        $t_id = $row['trip_id'];
-
-        $sql = "INSERT INTO trip(time_of_departure_h, time_of_departure_m, status, free_seats ) VALUES('$time_of_dept_h', '$time_of_dept_m', 'open', 4) WHERE trip_id = '$t_id'";
-        $result = $conn->query($sql);
+    { 
+      /*  $result = $conn->query($sql);
         if(!$result){
             $toprint = array('status' => 'Failure','msg'=>'Could not do the insertion on trip');
             echo json_encode($toprint);
             die();
-        }
-
-        $sql = "INSERT INTO trip_has(trip_id) VALUES('$t_id')";
+        }*/
+        $sql = "INSERT INTO route(r_id) VALUES($GLOBALS['r_id'])";
+        $result = $conn->query($sql);
+         
+        $sql = "INSERT INTO trip_has(trip_id, r_id) VALUES($GLOBALS['trip_id'],$GLOBALS['r_id'])";
         $result = $conn->query($sql);
         if(!$result){
             $toprint = array('status' => 'Failure','msg'=>'Could not do the insertion on trip_has');
             echo json_encode($toprint);
             die();
         }
-
-        $r_id = $row['r_id'];
-        $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES('$r_id','$cp1_name', '$cp1_loc_lat', '$cp1_loc_lon', '$cp1_price', '$cp1_hour', '$cp1_min' ) ";
+        $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES($GLOBALS['r_id'],'$cp1_name', '$cp1_loc_lat', '$cp1_loc_lon', '$cp1_price', '$cp1_hour', '$cp1_min' ) ";
         $result = $conn->query($sql);
 
-        $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES('$r_id','$cp2_name', '$cp2_loc_lat', '$cp2_loc_lon', '$cp2_price', '$cp2_hour', '$cp2_min' ) ";
+        $sql = "INSERT INTO checkpoints(r_id, location_name, location_lat, location_lon, price, ETA_hour, ETA_min) VALUES($GLOBALS['r_id'],'$cp2_name', '$cp2_loc_lat', '$cp2_loc_lon', '$cp2_price', '$cp2_hour', '$cp2_min' ) ";
         $result = $conn->query($sql);
         $toprint = array('status' => 'Success');
+        $GLOBALS['r_id'] = $GLOBALS['r_id'] + 1;
+        $GLOBALS['trip_id'] = $GLOBALS['trip_id'] + 1;
     }
     echo json_encode($toprint);
 ?>
